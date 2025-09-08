@@ -73,6 +73,33 @@ La API está desplegada en Render y está disponible en:
 La aplicación está disponible en:
 - [https://2025-proyecto1-front-imc-sepia.vercel.app/](https://2025-proyecto1-front-imc-sepia.vercel.app/)
 
+Se realizaron los siguientes ajustes para compatibilidad con Render:
+
+// 1. Puerto dinámico
+// Antes
+await app.listen(3000);
+
+// Después
+const port = process.env.PORT || 3000;
+await app.listen(port);
+console.log(`App running on port ${port}`);
+
+Render asigna dinámicamente el puerto, por lo que es necesario usar process.env.PORT.
+
+Habilitación de CORS
+
+app.enableCors();
+
+
+Permite que el frontend desplegado en Vercel pueda comunicarse con el backend.
+
+Validación global de datos
+
+app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+
+
+Garantiza que las solicitudes incluyan únicamente los campos esperados y bloquea datos no permitidos.
+
 ## Autor
 - Grupo 12 -
 </p>
