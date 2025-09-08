@@ -1,23 +1,80 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# API Calculadora de IMC
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend de la Calculadora de IMC, desarrollado con NestJS. Esta API proporciona endpoints para calcular el Índice de Masa Corporal (IMC) y determinar la categoría de peso correspondiente.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+## Descripción
+
+Este servicio backend forma parte del proyecto de Calculadora de IMC desarrollado para el curso de Ingeniería de Software. Está construido utilizando NestJS, un framework progresivo de Node.js para crear aplicaciones del lado del servidor eficientes y escalables.
+
+## Endpoints
+
+### Calcular IMC
+- **URL**: `/imc/calcular`
+- **Método**: `POST`
+- **Body**:
+  ```json
+  {
+    "altura": number,  // altura en metros
+    "peso": number     // peso en kilogramos
+  }
+  ```
+- **Respuesta**:
+  ```json
+  {
+    "imc": number,     // resultado del cálculo
+    "categoria": string // clasificación del IMC
+  }
+  ```
+
+## Tecnologías Utilizadas
+
+- NestJS
+- TypeScript
+- class-validator para validación de datos
+- Jest para testing
+
+## Características
+
+- Validación de datos de entrada
+- Cálculo preciso del IMC
+- Clasificación automática según rangos estándar
+- Arquitectura modular y escalable
+- Tests unitarios
+
+## Desarrollo Local
+
+### Requisitos Previos
+- Node.js
+- npm o yarn
+
+### Configuración
+```bash
+# Instalar dependencias
+npm install
+
+# Ejecutar en modo desarrollo
+npm run start:dev
+
+# Ejecutar tests
+npm run test
+```
+
+### Puerto
+Por defecto, la aplicación corre en:
+```
+http://localhost:3000
+```
+
+## Despliegue
+
+La API está desplegada en Render y está disponible en:
+- [https://two025-proyecto1-back-imc-vlxv.onrender.com](https://two025-proyecto1-back-imc-vlxv.onrender.com)
+
+La aplicación está disponible en:
+- [https://two025-proyecto1-front-imc.onrender.com](https://2025-proyecto1-front-imc-sepia.vercel.app/)
+
+## Autor
+- Grupo 12 -
 </p>
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
