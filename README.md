@@ -71,7 +71,7 @@ La API está desplegada en Render y está disponible en:
 - [https://two025-proyecto1-back-imc-vlxv.onrender.com](https://two025-proyecto1-back-imc-vlxv.onrender.com)
 
 La aplicación está disponible en:
-- [https://two025-proyecto1-front-imc.onrender.com](https://2025-proyecto1-front-imc-sepia.vercel.app/)
+- [https://2025-proyecto1-front-imc-sepia.vercel.app/](https://2025-proyecto1-front-imc-sepia.vercel.app/)
 
 ## Autor
 - Grupo 12 -
