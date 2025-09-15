@@ -1,73 +1,63 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-/**
- * Migración para crear la tabla de usuarios y actualizar la tabla de cálculos IMC
- * - Crea la tabla 'users' con campos email, password, name y timestamps
- * - Agrega la columna user_id a la tabla 'imc_calculations' para establecer la relación
- * - Crea índices y claves foráneas necesarias
- */
 export class CreateUserAndUpdateImcCalculations1734220800000 implements MigrationInterface {
     name = 'CreateUserAndUpdateImcCalculations1734220800000'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        // Crear tabla users
+        // 1) Crear tabla users
         await queryRunner.query(`
-            CREATE TABLE "users" (
-                "id" SERIAL NOT NULL, 
-                "email" character varying(255) NOT NULL, 
-                "password" character varying(255) NOT NULL, 
-                "name" character varying(100), 
-                "created_at" TIMESTAMP NOT NULL DEFAULT now(), 
-                "updated_at" TIMESTAMP NOT NULL DEFAULT now(), 
-                CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), 
-                CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id")
+            CREATE TABLE "users"(
+                "id" SERIAL NOT NULL,
+                "email" varchar(255) NOT NULL,
+                "password" varchar(255) NOT NULL,
+                "name" varchar(100),
+                "created_at" TIMESTAMP NOT NULL DEFAULT now(),
+                "updated_at" TIMESTAMP NOT NULL DEFAULT now(),
+                CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE("email"),
+                CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY("id")
             )
         `);
 
-        // Agregar columna user_id a imc_calculations
+        // 2) Insertar usuario por defecto
         await queryRunner.query(`
-            ALTER TABLE "imc_calculations" 
-            ADD "user_id" integer NOT NULL DEFAULT 1
+            INSERT INTO "users"("id", "email", "password", "name")
+            VALUES(1, 'default@example.com', '$2b$10$example.hash.for.default.user', 'Usuario por defecto')
+            ON CONFLICT("id") DO NOTHING
+        `);
+        
+        // 3) Agregar columna user_id a imc_calculations
+        await queryRunner.query(`
+            ALTER TABLE "imc_calculations" ADD "user_id" integer NOT NULL DEFAULT 1
         `);
 
-        // Crear índice para user_id
+        // 4) Crear índice
         await queryRunner.query(`
-            CREATE INDEX "IDX_user_id_imc_calculations" ON "imc_calculations" ("user_id")
+            CREATE INDEX "IDX_user_id_imc_calculations" ON "imc_calculations"("user_id")
         `);
 
-        // Crear clave foránea
+        // 5) Agregar foreign key
         await queryRunner.query(`
-            ALTER TABLE "imc_calculations" 
-            ADD CONSTRAINT "FK_imc_calculations_user_id" 
-            FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE
+            ALTER TABLE "imc_calculations"
+            ADD CONSTRAINT "FK_imc_calculations_user_id"
+            FOREIGN KEY("user_id") REFERENCES "users"("id") ON DELETE CASCADE
         `);
 
-        // Insertar usuario por defecto para mantener integridad referencial
+        // 6) Remover DEFAULT para futuros inserts
         await queryRunner.query(`
-            INSERT INTO "users" ("email", "password", "name") 
-            VALUES ('default@example.com', '$2b$10$example.hash.for.default.user', 'Usuario por defecto')
+            ALTER TABLE "imc_calculations" ALTER COLUMN "user_id" DROP DEFAULT
         `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        // Eliminar clave foránea
         await queryRunner.query(`
-            ALTER TABLE "imc_calculations" 
-            DROP CONSTRAINT "FK_imc_calculations_user_id"
+            ALTER TABLE "imc_calculations" DROP CONSTRAINT "FK_imc_calculations_user_id"
         `);
-
-        // Eliminar índice
         await queryRunner.query(`
             DROP INDEX "IDX_user_id_imc_calculations"
         `);
-
-        // Eliminar columna user_id
         await queryRunner.query(`
-            ALTER TABLE "imc_calculations" 
-            DROP COLUMN "user_id"
+            ALTER TABLE "imc_calculations" DROP COLUMN "user_id"
         `);
-
-        // Eliminar tabla users
         await queryRunner.query(`
             DROP TABLE "users"
         `);
