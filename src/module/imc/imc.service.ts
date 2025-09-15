@@ -60,23 +60,19 @@ export class ImcService {
     
     // Agregar filtros de fecha si se proporcionan
     if (fechaInicio && fechaFin) {
-      // Si se proporcionan ambas fechas
+      // Si se proporcionan ambas fechas, usar Between para un rango completo
       const startDate = new Date(fechaInicio + 'T00:00:00.000Z');
       const endDate = new Date(fechaFin + 'T23:59:59.999Z');
-      whereConditions.createdAt = MoreThanOrEqual(startDate);
       
-      return this.imcRepo.find({ 
-        where: [
-          { ...whereConditions, createdAt: MoreThanOrEqual(startDate) },
-        ],
-        order: { createdAt: 'DESC' }, 
-        take: limit 
-      }).then(results => 
-        results.filter(item => 
-          new Date(item.createdAt) >= startDate && 
-          new Date(item.createdAt) <= endDate
-        )
-      );
+      // Usar query builder para una consulta más precisa con ambas condiciones
+      return this.imcRepo
+        .createQueryBuilder('imc')
+        .where('imc.userId = :userId', { userId: user.id })
+        .andWhere('imc.createdAt >= :startDate', { startDate })
+        .andWhere('imc.createdAt <= :endDate', { endDate })
+        .orderBy('imc.createdAt', 'DESC')
+        .limit(limit)
+        .getMany();
     } else if (fechaInicio) {
       // Solo fecha de inicio
       const startDate = new Date(fechaInicio + 'T00:00:00.000Z');
