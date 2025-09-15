@@ -30,14 +30,16 @@ export class ImcController {
 
   /**
    * Obtiene el historial de cálculos del usuario autenticado
-   * GET /imc/historial?limit=20
+   * GET /imc/historial?limit=20&fechaInicio=YYYY-MM-DD&fechaFin=YYYY-MM-DD
    * Requiere token JWT válido
    */
   @Get('historial')
   historial(
+    @CurrentUser() user: User,
     @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
-    @CurrentUser() user: User
+    @Query('fechaInicio') fechaInicio?: string,
+    @Query('fechaFin') fechaFin?: string
   ) {
-    return this.imcService.historial(user, limit);
+    return this.imcService.historial(user, limit, fechaInicio, fechaFin);
   }
 }
