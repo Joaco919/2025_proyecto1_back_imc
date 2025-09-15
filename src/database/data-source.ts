@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
 import { ImcCalculation } from '../module/imc/entities/imc-calculation.entity';
+import { User } from '../module/user/entities/user.entity';
 
 // Carga .env solo si no hay DATABASE_URL definida y si dotenv está instalado.
 (() => {
@@ -27,7 +28,7 @@ export default new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
   ssl,
-  entities: [ImcCalculation],
+  entities: [ImcCalculation, User],
   migrations: [isProd ? 'dist/database/migrations/*.js' : 'src/database/migrations/*.ts'],
   synchronize: false,
 });

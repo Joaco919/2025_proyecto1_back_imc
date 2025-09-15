@@ -4,7 +4,10 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
+import { User } from '../../user/entities/user.entity';
 
 @Entity({ name: 'imc_calculations' })
 export class ImcCalculation {
@@ -26,6 +29,17 @@ export class ImcCalculation {
   // Categoría calculada (Bajo peso, Normal, Sobrepeso, Obeso)
   @Column({ type: 'varchar', length: 32 })
   categoria: string;
+
+  // Relación muchos a uno: múltiples cálculos pueden pertenecer a un usuario
+  @ManyToOne(() => User, (user) => user.imcCalculations, {
+    onDelete: 'CASCADE', // Si se elimina el usuario, se eliminan sus cálculos
+  })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  // ID del usuario propietario del cálculo
+  @Column({ name: 'user_id' })
+  userId: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
