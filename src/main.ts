@@ -9,8 +9,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000', // Para desarrollo local del frontend
-      /^https:\/\/.*\.vercel\.app$/, // Para frontend desplegado en Vercel
-      // Agregar aquí la URL específica de tu frontend si es necesario
+      'https://2025-proyecto1-front-imc-sepia.vercel.app/', // URL exacta del front
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
