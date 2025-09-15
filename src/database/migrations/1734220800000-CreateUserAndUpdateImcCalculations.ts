@@ -24,6 +24,8 @@ export class CreateUserAndUpdateImcCalculations1734220800000 implements Migratio
             VALUES(1, 'default@example.com', '$2b$10$example.hash.for.default.user', 'Usuario por defecto')
             ON CONFLICT("id") DO NOTHING
         `);
+
+        
         
         // 3) Agregar columna user_id a imc_calculations
         await queryRunner.query(`
@@ -45,6 +47,11 @@ export class CreateUserAndUpdateImcCalculations1734220800000 implements Migratio
         // 6) Remover DEFAULT para futuros inserts
         await queryRunner.query(`
             ALTER TABLE "imc_calculations" ALTER COLUMN "user_id" DROP DEFAULT
+        `);
+
+        // 7) Ajustar la secuencia de IDs para que el próximo sea 2
+        await queryRunner.query(`
+            SELECT setval(pg_get_serial_sequence('users', 'id'), COALESCE((SELECT MAX(id) FROM users), 1), true)
         `);
     }
 
