@@ -42,4 +42,18 @@ export class ImcController {
   ) {
     return this.imcService.historial(user, limit, fechaInicio, fechaFin);
   }
+
+  /**
+   * Obtiene estadísticas agregadas del usuario autenticado
+   * GET /imc/estadisticas?fechaInicio=YYYY-MM-DD&fechaFin=YYYY-MM-DD
+   * Requiere token JWT válido
+   */
+  @Get('estadisticas')
+  estadisticas(
+    @CurrentUser() user: User,
+    @Query('fechaInicio') fechaInicio?: string,
+    @Query('fechaFin') fechaFin?: string
+  ) {
+    return this.imcService.estadisticas(user, fechaInicio, fechaFin);
+  }
 }
