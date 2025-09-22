@@ -16,8 +16,11 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
+    "test:cov:check": "jest --coverage --watchAll=false --passWithNoTests",
+    "test:cov:ci": "jest --coverage --watchAll=false --ci --forceExit --passWithNoTests",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "test:e2e:cov": "jest --config ./test/jest-e2e.json --coverage",
     "db:migrate:run": "ts-node -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js -d src/database/data-source.ts migration:run",
     "db:migrate:revert": "ts-node -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js -d src/database/data-source.ts migration:revert",
     "db:migration:show": "ts-node -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli.js -d src/database/data-source.ts migration:show",
@@ -88,9 +91,30 @@
       "^.+\\.(t|j)s$": "ts-jest"
     },
     "collectCoverageFrom": [
-      "**/*.(t|j)s"
+      "**/*.(t|j)s",
+      "!main.ts",
+      "!**/node_modules/**",
+      "!**/dist/**",
+      "!**/migrations/**",
+      "!**/*.interface.ts",
+      "!**/*.dto.ts",
+      "!**/*.entity.ts"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "coverageThreshold": {
+      "global": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      }
+    },
+    "coverageReporters": [
+      "text",
+      "lcov",
+      "html",
+      "json-summary"
+    ]
   }
 }
